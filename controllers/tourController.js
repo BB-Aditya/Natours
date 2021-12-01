@@ -5,7 +5,7 @@ const tours = JSON.parse(
 );
 
 exports.checkId = (req, res, next, val) => {
-  if (val * 1 > tours.length) {
+  if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'not found',
       message: 'Invalid Id.',
