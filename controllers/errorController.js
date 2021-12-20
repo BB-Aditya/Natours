@@ -8,8 +8,6 @@ const sendDevErr = (err, res) => {
   });
 };
 
-
-
 const sendProdErr = (err, res) => {
   if (err.isOperational === true) {
     console.log(err);
@@ -25,6 +23,8 @@ const sendProdErr = (err, res) => {
   }
 };
 
+const errorHandlerWebToken = () => new AppError('Invalid Token', 400);
+const errorHandlerTokenExpired = () => new AppError('Token Expired', 400);
 const errorHandlerDB = (error) => {
   error.status = 'fail';
   const message = ` Invalid ${error.path} : ${error.value}`;
@@ -57,6 +57,9 @@ exports.globalErrorHandler = function (err, req, res, next) {
     if (error.name === 'CastError') error = errorHandlerDB(error);
     if (error.code === 11000) error = errorHandlerDuplicate(error);
     if (error.name === 'ValidationError') error = errorHandlerValidation(error);
+    if (error.name === 'JsonWebTokenError') error = errorHandlerWebToken(error);
+    if (error.name === 'TokenExpiredError')
+      error = errorHandlerTokenExpired(error);
 
     sendProdErr(error, res);
   } else if (process.env.NODE_ENV === 'development') {

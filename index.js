@@ -24,7 +24,6 @@ app.use(express.static(`${__dirname}/public`));
 app.use('/', homeRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-
 app.all('*', (req, res, next) => {
   // const err = new Error(`Can't find ${req.originalUrl} on this server`);
   // err.status = 'fail';

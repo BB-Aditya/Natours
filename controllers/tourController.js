@@ -1,5 +1,5 @@
 const AppError = require('../utils/appError');
-
+const catchAsync = require(`../utils/catchAsync`);
 const Tour = require(`../models/tourModel.js`);
 const APIFeatures = require(`../utils/apiFeatures`);
 //  const tours = JSON.parse(
@@ -38,11 +38,6 @@ exports.setFields = (req, res, next) => {
 };
 
 // eslint-disable-next-line arrow-body-style
-const catchAsync = (fn) => {
-  return (req, res, next) => {
-    fn(req, res, next).catch((err) => next(err));
-  };
-};
 
 exports.getTours = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(Tour.find(), req.query)
